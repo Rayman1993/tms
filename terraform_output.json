@@ -1,0 +1,29 @@
+{
+  "default_instance_public_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "158.160.27.72"
+  },
+  "instance_ips": {
+    "sensitive": false,
+    "type": [
+      "tuple",
+      [
+        "string"
+      ]
+    ],
+    "value": [
+      "158.160.27.72"
+    ]
+  },
+  "subnet_id": {
+    "sensitive": false,
+    "type": "string",
+    "value": "e2loklid26i34a8t0ib2"
+  },
+  "ubuntu22": {
+    "sensitive": false,
+    "type": "string",
+    "value": "fd8p8rslnsmtkkqojh50"
+  }
+}

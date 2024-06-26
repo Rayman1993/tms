@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: installing ssh
+      apt:
+        name: openssh-server
+        state: latest
+
+    - name: add user jenkins
+      user:
+        name: jenkins
+        home: /home/jenkins
+        groups: sudo, docker
+        state: present
+        password: "{ {  pwd | password_hash('sha512') } }"
+      vars:
+        pwd: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38306331323439373430356530633765393331326634303132663636326164313562396336666165
+          3032346361303034646161663564323335666639343064300a643031313930393531663265643437
+          33623163346136323739303762636162663731663862363031623661616132666330646637343239
+          3366653964303766350a333039336562666339393335326365316462323032353662346137393433
+          33646166623337646338636261396561613161626164613233346532653466323162353263646436
+          32353765353464333862663461633135646538323137623237626330343161386635376130616133
+          38383238346663333137616263373762343339366264373561643964383566643962633261363834
+          38353533613461663562
+
+    - name: Создать директорию
+      file:
+        path: /home/jenkins/.ssh
+        state: directory
+        mode: '0755'
+
+    - name: Copy public key
+      copy:
+        src: /home/ray/.ssh/id_rsa.pub
+        dest: /home/jenkins/.ssh/authorized_keys
