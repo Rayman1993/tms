@@ -2,36 +2,12 @@
   "agent_instance_public_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "158.160.94.116"
-  },
-  "instance_ip_agent": {
-    "sensitive": false,
-    "type": [
-      "tuple",
-      [
-        "string"
-      ]
-    ],
-    "value": [
-      "158.160.94.116"
-    ]
-  },
-  "instance_ip_server": {
-    "sensitive": false,
-    "type": [
-      "tuple",
-      [
-        "string"
-      ]
-    ],
-    "value": [
-      "158.160.74.163"
-    ]
+    "value": "84.201.136.13"
   },
   "server_instance_public_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "158.160.74.163"
+    "value": "84.201.178.169"
   },
   "subnet_id": {
     "sensitive": false,

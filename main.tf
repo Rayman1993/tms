@@ -27,7 +27,7 @@ resource "yandex_compute_instance" "server" {
 	platform_id = "standard-v1"
 
   resources {
-    core_fraction = 5
+    core_fraction = 100
     cores  = 4
     memory = 4
   }
@@ -47,6 +47,10 @@ resource "yandex_compute_instance" "server" {
   metadata = {
     user-data = "${file("./meta.yml")}"
     ssh-keys = "ubuntu:${file(var.ssh)}"
+  }
+
+  labels = {
+    id = "jenkins-server"
   }
 }
 
@@ -56,7 +60,7 @@ resource "yandex_compute_instance" "agent" {
 	platform_id = "standard-v1"
 
   resources {
-    core_fraction = 5
+    core_fraction = 100
     cores  = 4
     memory = 4
   }
@@ -76,5 +80,9 @@ resource "yandex_compute_instance" "agent" {
   metadata = {
     user-data = "${file("./meta.yml")}"
     ssh-keys = "ubuntu:${file(var.ssh)}"
+  }
+
+  labels = {
+    id = "jenkins-agent"
   }
 }

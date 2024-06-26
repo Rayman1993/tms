@@ -3,11 +3,6 @@
   become: true
 
   tasks:
-    - name: installing ssh
-      apt:
-        name: openssh-server
-        state: latest
-
     - name: add user jenkins
       user:
         name: jenkins
@@ -37,3 +32,7 @@
       copy:
         src: /home/ray/.ssh/id_rsa.pub
         dest: /home/jenkins/.ssh/authorized_keys
+
+    - name: Install linter
+      pip:
+        name: flake8

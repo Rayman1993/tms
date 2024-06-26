@@ -9,9 +9,19 @@ pipeline {
                 git url: 'https://github.com/Rayman1993/calculator.git', branch: 'main'
             }
         }
+        stage('Check lint') {
+            steps {
+                script {
+                    sh "cd app/"
+                    sh "flake8 ."
+                    }
+                }
+            }
+        }
         stage('Build') {
             steps {
                 script {
+                    sh "cd .."
                     sh "docker build -t rayman1993/calculator ."
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub') {
                         docker.image('rayman1993/calculator').push('latest')
