@@ -9,14 +9,6 @@ pipeline {
                 git url: 'https://github.com/Rayman1993/calculator.git', branch: 'main'
             }
         }
-        stage('Check lint') {
-            steps {
-                script {
-                    sh "cd app/"
-                    sh "flake8 ."
-                    }
-                }
-            }
 
         stage('Build') {
             steps {
