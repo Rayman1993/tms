@@ -1,6 +1,5 @@
 # Makefile
 up:
-	sudo sed -i '$$d' ~/.ssh/known_hosts
 	terraform init
 	terraform plan
 	terraform apply -auto-approve
