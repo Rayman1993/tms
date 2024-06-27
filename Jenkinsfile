@@ -24,6 +24,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    sh 'docker stop $(docker ps -aq) || true'
+                    sh 'docker rm $(docker ps -aq) || true'
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub') {
                         docker.image('rayman1993/calculator').run("-p 9090:5000")
                     }
@@ -31,24 +33,30 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            script {
-                emailext (
-                    subject: "Jenkins Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Succeeded",
-                    body: """<p>Jenkins Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Succeeded: Check console output at ${env.BUILD_URL}</p>""",
-                    to: 'ray.mail.by.ray.mail.by@gmail.com'
-                )
-            }
+ post {
+     success {
+        withCredentials([string(credentialsId: 'bot_tg', variable: 'TOKEN'), string(credentialsId: 'chat_id', variable: 'CHAT_ID')]) {
+        sh  ("""
+            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : POC *Branch*: ${env.GIT_BRANCH} *Build* : OK *Published* = YES'
+        """)
         }
-        failure {
-            script {
-                emailext (
-                    subject: "Jenkins Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Failed",
-                    body: """<p>Jenkins Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' Failed: Check console output at ${env.BUILD_URL}</p>""",
-                    to: 'ray.mail.by.ray.mail.by@gmail.com'
-                )
-            }
+     }
+
+     aborted {
+        withCredentials([string(credentialsId: 'bot_tg', variable: 'TOKEN'), string(credentialsId: 'chat_id', variable: 'CHAT_ID')]) {
+        sh  ("""
+            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : POC *Branch*: ${env.GIT_BRANCH} *Build* : `Aborted` *Published* = `Aborted`'
+        """)
         }
-    }
+
+     }
+     failure {
+        withCredentials([string(credentialsId: 'bot_tg', variable: 'TOKEN'), string(credentialsId: 'chat_id', variable: 'CHAT_ID')]) {
+        sh  ("""
+            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : POC  *Branch*: ${env.GIT_BRANCH} *Build* : `not OK` *Published* = `no`'
+        """)
+        }
+     }
+
+ }
 }

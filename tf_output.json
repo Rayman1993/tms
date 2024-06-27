@@ -2,12 +2,12 @@
   "agent_instance_public_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "84.201.136.13"
+    "value": "158.160.94.83"
   },
   "server_instance_public_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "84.201.178.169"
+    "value": "158.160.91.114"
   },
   "subnet_id": {
     "sensitive": false,
